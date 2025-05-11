@@ -11,18 +11,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
     - name: Checkout repository...
       uses: actions/checkout@v4
       with:
         submodules: recursive
 
-    - name: Download AndroidModLoader`s mod template...
+    - name: Download AndroidModLoader's mod template...
       uses: wei/wget@v1
       with:
         args: -O ./AML_src.zip https://github.com/RusJJ/AndroidModLoader/archive/refs/heads/main.zip
 
-    - name: Install AndroidModLoader`s mod template...
+    - name: Install AndroidModLoader's mod template...
       run: |
         unzip ./AML_src.zip
         mv ./AndroidModLoader-main/mod ./mod
@@ -38,8 +37,15 @@ jobs:
         ndk-version: r24
         local-cache: true
 
-    - name: Build the code...
-      run: ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk NDK_DEBUG=0 -j4
+    - name: Build the code (armeabi-v7a & arm64-v8a)...
+      run: |
+        ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk NDK_DEBUG=0 -j4
+
+    - name: Verify compiled binaries...
+      run: |
+        ls -R ./libs/
+        file ./libs/armeabi-v7a/*.so
+        file ./libs/arm64-v8a/*.so
 
     - name: Upload the mod!
       uses: actions/upload-artifact@v4
