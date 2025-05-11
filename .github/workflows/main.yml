@@ -5,6 +5,7 @@ on:
     branches: [ "RUSJJ_CLEO_MOD" ]
   pull_request:
     branches: [ "RUSJJ_CLEO_MOD" ]
+  workflow_dispatch:
 
 jobs:
   build:
